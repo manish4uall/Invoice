@@ -2,30 +2,318 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+
+<div id="modalAdd" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">[X]</a>
+            </div>
+            <h3>Add Item</h3>
+            <div class="modal-body">
+                <form id="popupForm">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input type="text" id="txtItemName" class="mdl-textfield__input"/>
+                        <label class="mdl-textfield__label" for="txtItemName">Item Name  </label>
+                    </div>
+                    <br />
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                         <input type="number" id="txtQuantity" class="mdl-textfield__input"/>
+                         <label class="mdl-textfield__label" for="txtQuantity">Quantity  </label>
+                    </div>
+                    <br />
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                         <input type="number" id="txtRate" class="mdl-textfield__input"/>
+                         <label class="mdl-textfield__label" for="txtRate">Rate  </label>
+                    </div>
+                    <br />
+                </form>
+                <div>
+                    <input type="button" value="OK" id="btnAddOK" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"/>
+                    <input type="button" value="Cancel"  onclick="DismissModal()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modalEdit" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">[X]</a>
+            </div>
+            <h3>Edit Items</h3>
+            <div class="modal-body">
+                <form id="popupForm">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input type="text" id="txteItemName" class="mdl-textfield__input" />
+                        <label class="mdl-textfield__label" for="txteItemName">Item Name  </label>
+                    </div>
+                    <br />
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input type="number" id="txteQuantity" class="mdl-textfield__input" />
+                        <label class="mdl-textfield__label" for="txteQuantity">Quantity  </label>
+                    </div>
+                    <br />
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input type="number" id="txteRate" class="mdl-textfield__input" />
+                        <label class="mdl-textfield__label" for="txteRate">Rate  </label>
+                    </div>
+                    <br />
+                    <input type="hidden" id="hdnEditId" />
+                </form>
+                <div>
+                    <input type="button" value="Edit" id="btnEditEdit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
+                    <input type="button" value="Cancel" onclick="DismissModal()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+<div id="modalList" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>List Orders <a href="#" class="close" data-dismiss="modal">[X]</a></h3>
+                
+            </div>
+            
+            <div class="modal-body">
+                <div>
+                    <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+                        <thead>
+                            <tr>
+                                <th class="mdl-data-table__cell--non-numeric">
+                                    Orders
+                                </th>
+                                <th>
+                                    Date
+                                </th>
+                                <th>
+                                    Customer Name
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <br />
+                <div>
+                    <input type="button" value="OK" id="btnListOK" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"/>
+                    <input type="button" value="Cancel" id="btnOK"  onclick="DismissModal()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"/>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<br />
+<div class="row">
+    <div class="col-md-8">
+
+    </div>
+    <div class="col-md-4">
+        <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btnList" value="List"  onclick="ShowList()"/>      
+        <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btnNew" value="New" />
+        <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btnSave" value="Save" />
+        <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btnDelete" value="Delete" />
+    </div>
+</div>
+<br />
+
+<div >
+    <form id="mainForm" action="#">
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input type="text" id="txtOrderNo" class="mdl-textfield__input" pattern="-?[0-9]*(\.[0-9]+)?" />
+            <label class="mdl-textfield__label" for="txtOrderNo">Order No.</label>
+            <span class="mdl-textfield__error">Input is not a number!</span>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input type="text" id="txtCustomerName" class="mdl-textfield__input" />
+            <label class="mdl-textfield__label" for="txtCustomerName">Customer Name</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input type="date" id="txtDate" class="mdl-textfield__input"/>
+            <label class="mdl-textfield__label" for="txtDate"></label>
+        </div>
+    </form>
+</div>
+
+
+
+<div class="row">
+    <div class="col-md-5">
+    </div>
+    <div class="col-md-4">
+        <button id="btnAddItem"  onclick="AddItem()" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored"><i class="material-icons">add</i></button>
+    </div>
+</div>
+<br />
+
+<div>
+    <table id="tblDisplay" class="mdl-data-table mdl-js-data-table mdl mdl-shadow--2dp">
+        <thead>
+            <tr>
+                <th class="mdl-data-table__cell--non-numeric">
+                    Item
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Rate
+                </th>
+                <th>
+                    Amount
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+</div>
+
+<script>
+    var arrItems = [];
+    $("#btnAddOK").click(function () {
+        CaptureEnteredData();
+        DismissModal();
+    })
+
+    $("#btnSave").click(function () {
+        SaveToDb();
+    })
+
+    $("#btnNew").click(function () {
+        ClearFormAndTableAndArray();
+    })
+
+    $("#btnEditEdit").click(function () {
+        EditDetails();
+    })
+    
+    
+
+    function AddItem() {
+        $("#modalAdd").modal("show");
+        $("#popupForm").trigger("reset");
+    }
+
+    function DismissModal() {
+        $("#modalList").modal("hide");
+        $("#modalAdd").modal("hide");
+    }
+
+    function ShowList() {
+        $("#modalList").modal("show");
+    }
+
+    function CaptureEnteredData() {
+
+        var orderNo = $("#txtOrderNo").val();
+        var date = $("#txtDate").val();
+        var customerName = $("#txtCustomerName").val();
+
+        var itemName = $("#txtItemName").val();
+        var quantity = $("#txtQuantity").val();
+        var rate = $("#txtRate").val();
+        var id = Math.floor(Math.random() * (999 - 1) + 1);
+
+
+        var obj = {
+            orderNo: orderNo,
+            date: date,
+            customerName: customerName,
+            itemName: itemName,
+            quantity: quantity,
+            rate: rate,
+            id: id
+        }
+        arrItems.push(obj);
+        ShowTable(arrItems);
+    }
+
+    function ShowTable(data) { 
+        console.log("function called", data.length);
+        $("#tblDisplay tbody").html('');
+        if (data.length>0) {
+            console.log("table Called");
+            $.each(data, function (i, item) {
+                $("#tblDisplay tbody").append('<tr><td class="mdl-data-table__cell--non-numeric">' + item.itemName + '</td><td>' + item.quantity + '</td><td>' + item.rate + '</td><td>' + item.quantity * item.rate + '</td><td><a href="#" class="btn btn-warning" onclick="EditBox(' + item.id + ')"><span class="glyphicon glyphicon-edit"></span></a></td><td><a href="#" class="btn btn-danger" onclick="Delete(' + item.id + ')"><span class="glyphicon glyphicon-remove"></span></a></td></tr>');
+
+            })
+        }
+        
+    }
+
+    function SaveToDb() {
+        $.ajax({
+            url: '/Home/SaveToDb',
+            type: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify(arrItems),
+            success: function (data) {
+                alert("Successfully Saved");
+                ClearFormAndTableAndArray();                
+            },
+            error: function (data) {
+            }
+        });
+    }
+
+    function ClearFormAndTableAndArray() {
+        $("#tblDisplay tbody").html('');
+        arrItems = [];
+        $("#mainForm").trigger("reset");
+        $("#popupForm").trigger("reset");
+    }
+
+
+    function EditBox(id) {
+        console.log("EDit", id);
+        var editedVal = arrItems.filter(el => {
+            return el.id == id
+        });
+        console.log("EDitedval", editedVal);
+        $("#txteItemName").val(editedVal[0].itemName);
+        $("#txteQuantity").val(editedVal[0].quantity);
+        $("#txteRate").val(editedVal[0].rate);
+        $("#hdnEditId").val(editedVal[0].id);
+        $("#modalEdit").modal("show");
+    }
+
+    function Delete(id) {
+            console.log(arrItems)
+            arrItems = arrItems.filter(function (item) {
+                return item.id !== id;
+        })
+        console.log(arrItems)
+        ShowTable(arrItems);
+        }
+        
+    
+
+    function EditDetails() {
+        var newItemName = $("#txteItemName").val();
+        var newQuantity = $("#txteQuantity").val();
+        var newRate = $("#txteRate").val();
+        var id = $("#hdnEditId").val();
+        $("#modalEdit").modal("hide");
+
+        for (var i = 0; i < arrItems.length; i++) {
+            if (arrItems[i].id == id) {
+                arrItems[i].itemName = newItemName;
+                arrItems[i].quantity = newQuantity;
+                arrItems[i].rate = newRate;
+                break;
+            }
+        }
+        ShowTable(arrItems);
+    }
+
+</script>
