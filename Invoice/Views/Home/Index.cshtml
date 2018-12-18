@@ -81,7 +81,7 @@
             
             <div class="modal-body">
                 <div>
-                    <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+                    <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp" id="tblOrder">
                         <thead>
                             <tr>
                                 <th class="mdl-data-table__cell--non-numeric">
@@ -115,7 +115,7 @@
     </div>
     <div class="col-md-4">
         <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btnList" value="List"  onclick="ShowList()"/>      
-        <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btnNew" value="New" />
+        <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btnNew" value="New" onclick="ClearFormAndTableAndArray()"/>
         <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btnSave" value="Save" />
         <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btnDelete" value="Delete" />
     </div>
@@ -188,10 +188,6 @@
         SaveToDb();
     })
 
-    $("#btnNew").click(function () {
-        ClearFormAndTableAndArray();
-    })
-
     $("#btnEditEdit").click(function () {
         EditDetails();
     })
@@ -210,6 +206,7 @@
 
     function ShowList() {
         $("#modalList").modal("show");
+        GetOrderData();
     }
 
     function CaptureEnteredData() {
@@ -243,7 +240,7 @@
         if (data.length>0) {
             console.log("table Called");
             $.each(data, function (i, item) {
-                $("#tblDisplay tbody").append('<tr><td class="mdl-data-table__cell--non-numeric">' + item.itemName + '</td><td>' + item.quantity + '</td><td>' + item.rate + '</td><td>' + item.quantity * item.rate + '</td><td><a href="#" class="btn btn-warning" onclick="EditBox(' + item.id + ')"><span class="glyphicon glyphicon-edit"></span></a></td><td><a href="#" class="btn btn-danger" onclick="Delete(' + item.id + ')"><span class="glyphicon glyphicon-remove"></span></a></td></tr>');
+                $("#tblOrder tbody").append('<tr><td class="mdl-data-table__cell--non-numeric">' + item.itemName + '</td><td>' + item.quantity + '</td><td>' + item.rate + '</td><td>' + item.quantity * item.rate + '</td><td><a href="#" class="btn btn-warning" onclick="DetailsTab(' + item.id + ')"><span class="glyphicon glyphicon-expand"></span></a></td><td><a href="#" class="btn btn-warning" onclick="EditBox(' + item.id + ')"><span class="glyphicon glyphicon-edit"></span></a></td><td><a href="#" class="btn btn-danger" onclick="Delete(' + item.id + ')"><span class="glyphicon glyphicon-remove"></span></a></td></tr>');
 
             })
         }
@@ -315,5 +312,40 @@
         }
         ShowTable(arrItems);
     }
+
+    function GetOrderData() {
+        $.ajax({
+            url: "/Home/GetOrders",
+            success: function (data) {
+                console.log("Success GetOrdersData", data);
+                AppendOrderDatatoTable(data);
+            },
+            error: function (data) {
+
+            }
+        });
+    }
+
+    function AppendOrderDatatoTable(data) {
+        console.log("Inside Function AppendOrderDatatoTable");
+        console.log("function called", data.length);
+        $("#tblOrder tbody").html('');
+        if (data.length > 0) {
+            console.log("table Called");
+            $.each(data, function (i, item) {
+                $("#tblOrder tbody").append('<tr><td class="mdl-data-table__cell--non-numeric">' + item.Order_no + '</td><td>' + ToJavaScriptDate(item.Order_date) + '</td><td>' + item.Customer_name + '</td><td><a href="#" class="btn btn-warning" onclick="EditBox(' + item.Order_id + ')"><span class="glyphicon glyphicon-edit"></span></a></td><td><a href="#" class="btn btn-danger" onclick="Delete(' + item.Order_id + ')"><span class="glyphicon glyphicon-remove"></span></a></td></tr>');
+
+            })
+        }
+    }
+
+    function ToJavaScriptDate(value) {
+        var pattern = /Date\(([^)]+)\)/;
+        var results = pattern.exec(value);
+        var dt = new Date(parseFloat(results[1]));
+        return (dt.getDate() + "-" + (dt.getMonth() + 1) + "-" + dt.getFullYear());
+    }
+
+
 
 </script>

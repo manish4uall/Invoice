@@ -28,6 +28,7 @@ namespace Invoice.Controllers
             return View();
         }
 
+        [HttpPost]
         public JsonResult SaveToDb(List<OrderItems> orderItems)
         {
             using(OrderManagementDBEntities dbObj = new OrderManagementDBEntities())
@@ -58,6 +59,18 @@ namespace Invoice.Controllers
             }
 
             return Json(new JsonResult(), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetOrders()
+        {
+            using(OrderManagementDBEntities dbObj = new OrderManagementDBEntities())
+            {
+                var result = dbObj.Order_mt.ToList();
+                return Json(result,JsonRequestBehavior.AllowGet);
+            }
+
+            
         }
     }
 }
