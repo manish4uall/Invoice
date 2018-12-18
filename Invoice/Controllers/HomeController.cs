@@ -28,23 +28,24 @@ namespace Invoice.Controllers
             return View();
         }
 
+        // Saves the Data to DataBase Table which is received by AJAX call
         [HttpPost]
-        public JsonResult SaveToDb(List<OrderItems> orderItems)
+        public JsonResult SaveToDb(OrderItems orderItems)
         {
             using(OrderManagementDBEntities dbObj = new OrderManagementDBEntities())
             {
                 Order_mt order = new Order_mt()
                 {
-                    Order_no = orderItems[0].orderNo,
-                    Order_date = orderItems[0].date,
-                    Customer_name = orderItems[0].customerName
+                    Order_no = orderItems.orderNo,
+                    Order_date = orderItems.date,
+                    Customer_name = orderItems.customerName
                 };
                 dbObj.Order_mt.Add(order);
                 dbObj.SaveChanges();
 
                 var id = dbObj.Order_mt.OrderByDescending(x => x.Order_id).First().Order_id;
 
-                foreach ( var items in orderItems)
+                foreach ( var items in orderItems.Items)
                 {                    
                     Order_dt order_Dt = new Order_dt()
                     {
@@ -61,6 +62,7 @@ namespace Invoice.Controllers
             return Json(new JsonResult(), JsonRequestBehavior.AllowGet);
         }
 
+        // Fetches the data From the Database table Orders_mt and Sends to the AJAX Request
         [HttpGet]
         public JsonResult GetOrders()
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Invoice.ViewModel;
 
 namespace Invoice.ViewModel
 {
@@ -11,8 +12,6 @@ namespace Invoice.ViewModel
         public string orderNo { get; set; }
         public DateTime date { get; set; }
         public string customerName { get; set; }
-        public string itemName { get; set; }
-        public int quantity { get; set; }
-        public decimal rate { get; set; }
+        public List<Items> Items { get; set; }
     }
 }

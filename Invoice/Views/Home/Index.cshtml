@@ -2,7 +2,7 @@
     ViewBag.Title = "Home Page";
 }
 
-
+@* Modals for the popup page, Add Item popup, Edit Item Popup and popup for showing Orders Information in a table *@
 <div id="modalAdd" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -29,8 +29,9 @@
                     <br />
                 </form>
                 <div>
-                    <input type="button" value="OK" id="btnAddOK" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"/>
-                    <input type="button" value="Cancel"  onclick="DismissModal()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"/>
+                    <input type="button" value="OK" onclick="CaptureEnteredData()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
+                    <input type="button" value="Cancel" data-dismiss="modal"  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
+
                 </div>
             </div>
         </div>
@@ -45,7 +46,7 @@
             <h3>Edit Items</h3>
             <div class="modal-body">
                 <form id="popupForm">
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <div class="mdl-textfield mdl-js-textfield">
                         <input type="text" id="txteItemName" class="mdl-textfield__input" />
                         <label class="mdl-textfield__label" for="txteItemName">Item Name  </label>
                     </div>
@@ -63,14 +64,13 @@
                     <input type="hidden" id="hdnEditId" />
                 </form>
                 <div>
-                    <input type="button" value="Edit" id="btnEditEdit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
-                    <input type="button" value="Cancel" onclick="DismissModal()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
+                    <input type="button" value="Edit" onclick="EditDetails()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
+                    <input type="button" value="Cancel" data-dismiss="modal" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 <div id="modalList" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -100,8 +100,8 @@
                 </div>
                 <br />
                 <div>
-                    <input type="button" value="OK" id="btnListOK" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"/>
-                    <input type="button" value="Cancel" id="btnOK"  onclick="DismissModal()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"/>
+                    <input type="button" value="OK" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"/>
+                    <input type="button" value="Cancel" data-dismiss="modal" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"/>
                 </div>
             </div>
         </div>
@@ -114,10 +114,10 @@
 
     </div>
     <div class="col-md-4">
-        <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btnList" value="List"  onclick="ShowList()"/>      
-        <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btnNew" value="New" onclick="ClearFormAndTableAndArray()"/>
-        <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btnSave" value="Save" />
-        <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btnDelete" value="Delete" />
+        <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="List"  onclick="ShowList()"/>      
+        <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="New" onclick="ClearFormAndTableAndArray()"/>
+        <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Save" onclick="SaveToDb()"/>
+        <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Delete" />
     </div>
 </div>
 <br />
@@ -178,39 +178,32 @@
 </div>
 
 <script>
+    //Global array for holding all the orders and Items details
     var arrItems = [];
-    $("#btnAddOK").click(function () {
-        CaptureEnteredData();
-        DismissModal();
-    })
+    // Global object for holding all the data
+    var obj;
 
-    $("#btnSave").click(function () {
-        SaveToDb();
-    })
-
-    $("#btnEditEdit").click(function () {
-        EditDetails();
-    })
-    
-    
-
+    //Opens AddItem Pop-up page and resets Pop-up form value
     function AddItem() {
         $("#modalAdd").modal("show");
         $("#popupForm").trigger("reset");
     }
 
+    //Hides Pop-up page
     function DismissModal() {
         $("#modalList").modal("hide");
         $("#modalAdd").modal("hide");
     }
 
+    // Shows list of orders on pop-up page
     function ShowList() {
-        $("#modalList").modal("show");
         GetOrderData();
+        $("#modalList").modal("show");
     }
 
+    // Retrieves Data From Form and Stores it into Global variable obj
     function CaptureEnteredData() {
-
+        
         var orderNo = $("#txtOrderNo").val();
         var date = $("#txtDate").val();
         var customerName = $("#txtCustomerName").val();
@@ -218,42 +211,55 @@
         var itemName = $("#txtItemName").val();
         var quantity = $("#txtQuantity").val();
         var rate = $("#txtRate").val();
+
+        // Generates Random Integer to be binded with each table row and to be stored in Items array
         var id = Math.floor(Math.random() * (999 - 1) + 1);
 
-
-        var obj = {
-            orderNo: orderNo,
-            date: date,
-            customerName: customerName,
+        var item = {
             itemName: itemName,
             quantity: quantity,
             rate: rate,
             id: id
         }
-        arrItems.push(obj);
-        ShowTable(arrItems);
-    }
+        arrItems.push(item);
 
-    function ShowTable(data) { 
-        console.log("function called", data.length);
-        $("#tblDisplay tbody").html('');
-        if (data.length>0) {
-            console.log("table Called");
-            $.each(data, function (i, item) {
-                $("#tblOrder tbody").append('<tr><td class="mdl-data-table__cell--non-numeric">' + item.itemName + '</td><td>' + item.quantity + '</td><td>' + item.rate + '</td><td>' + item.quantity * item.rate + '</td><td><a href="#" class="btn btn-warning" onclick="DetailsTab(' + item.id + ')"><span class="glyphicon glyphicon-expand"></span></a></td><td><a href="#" class="btn btn-warning" onclick="EditBox(' + item.id + ')"><span class="glyphicon glyphicon-edit"></span></a></td><td><a href="#" class="btn btn-danger" onclick="Delete(' + item.id + ')"><span class="glyphicon glyphicon-remove"></span></a></td></tr>');
 
-            })
+        obj = {
+            orderNo: orderNo,
+            date: date,
+            customerName: customerName,
+            Items: arrItems
         }
+        
+        console.log("Items",arrItems);
+        console.log("obj",obj);
+        ShowTable(arrItems);
         
     }
 
+    // Loads Table data from the Global Array
+    function ShowTable(data) { 
+        console.log("Data", data)
+        console.log("function called", data.length);
+        $("#tblDisplay tbody").html('');
+        if (data.length>0) {
+            console.log("Apend Condition true");
+            $.each(data, function (i, item) {
+                $("#tblDisplay tbody").append('<tr><td class="mdl-data-table__cell--non-numeric">' + item.itemName + '</td><td>' + item.quantity + '</td><td>' + item.rate + '</td><td>' + item.quantity * item.rate + '</td><td><a href="#" class="btn btn-warning" onclick="DetailsTab(' + item.id + ')"><span class="glyphicon glyphicon-expand"></span></a></td><td><a href="#" class="btn btn-warning" onclick="EditBox(' + item.id + ')"><span class="glyphicon glyphicon-edit"></span></a></td><td><a href="#" class="btn btn-danger" onclick="Delete(' + item.id + ')"><span class="glyphicon glyphicon-remove"></span></a></td></tr>');
+
+            })
+        }
+        DismissModal();
+    }
+
+    // Pushes Data to Controller in order to save to Database
     function SaveToDb() {
         $.ajax({
             url: '/Home/SaveToDb',
             type: 'POST',
             contentType: 'application/json',
             dataType: 'json',
-            data: JSON.stringify(arrItems),
+            data: JSON.stringify(obj),
             success: function (data) {
                 alert("Successfully Saved");
                 ClearFormAndTableAndArray();                
@@ -263,14 +269,18 @@
         });
     }
 
+    // Resets Form, Clears Table Data, and Deletes all the element from Global Array
     function ClearFormAndTableAndArray() {
         $("#tblDisplay tbody").html('');
+        console.log("Before",arrItems,obj);
         arrItems = [];
+        obj = {};
+        console.log("After", arrItems, obj);
         $("#mainForm").trigger("reset");
         $("#popupForm").trigger("reset");
     }
 
-
+    // Shows Pop-up page for editing values and shows existing value in the Form
     function EditBox(id) {
         console.log("EDit", id);
         var editedVal = arrItems.filter(el => {
@@ -284,6 +294,7 @@
         $("#modalEdit").modal("show");
     }
 
+    // Deletes an Element from Array based on the id provided
     function Delete(id) {
             console.log(arrItems)
             arrItems = arrItems.filter(function (item) {
@@ -294,7 +305,7 @@
         }
         
     
-
+    // Updates Array Entries based on the value provided from EDIT Pop-up page
     function EditDetails() {
         var newItemName = $("#txteItemName").val();
         var newQuantity = $("#txteQuantity").val();
@@ -313,6 +324,7 @@
         ShowTable(arrItems);
     }
 
+    // Requests Controller For the Order Data to be shown on the "List Orders" Pop-up
     function GetOrderData() {
         $.ajax({
             url: "/Home/GetOrders",
@@ -326,6 +338,7 @@
         });
     }
 
+    // Appends Orders Data to the Table
     function AppendOrderDatatoTable(data) {
         console.log("Inside Function AppendOrderDatatoTable");
         console.log("function called", data.length);
@@ -339,6 +352,7 @@
         }
     }
 
+    // Converts to JavaScript Date
     function ToJavaScriptDate(value) {
         var pattern = /Date\(([^)]+)\)/;
         var results = pattern.exec(value);
