@@ -7,9 +7,9 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <a href="#" class="close" data-dismiss="modal">[X]</a>
+                <h4 class="modal-title">Add Item</h4>
             </div>
-            <h3>Add Item</h3>
+            
             <div class="modal-body">
                 <form id="popupForm">
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -29,10 +29,12 @@
                     <br />
                 </form>
                 <div>
-                    <input type="button" value="OK" onclick="CaptureEnteredData()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
-                    <input type="button" value="Cancel" data-dismiss="modal"  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
-
+                    
                 </div>
+            </div>
+            <div class="modal-footer">
+                <input type="button" value="OK" onclick="CaptureEnteredData()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
+                <button type="button" data-dismiss="modal" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Close</button>
             </div>
         </div>
     </div>
@@ -41,32 +43,36 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <a href="#" class="close" data-dismiss="modal">[X]</a>
+                <h4 class="modal-title">Edit Items</h4>
             </div>
-            <h3>Edit Items</h3>
+
             <div class="modal-body">
                 <form id="popupForm">
-                    <div class="mdl-textfield mdl-js-textfield">
-                        <input type="text" id="txteItemName" class="mdl-textfield__input" />
-                        <label class="mdl-textfield__label" for="txteItemName">Item Name  </label>
+                    <div class="form-group">
+                        <label for="txteItemName">Item Name  </label>
+                        <input type="text" id="txteItemName" class="form-control" />
+
                     </div>
                     <br />
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input type="number" id="txteQuantity" class="mdl-textfield__input" />
-                        <label class="mdl-textfield__label" for="txteQuantity">Quantity  </label>
+                    <div class="form-group">
+                        <label for="txteQuantity">Quantity  </label>
+                        <input type="number" id="txteQuantity" class="form-control" />
+
                     </div>
                     <br />
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input type="number" id="txteRate" class="mdl-textfield__input" />
-                        <label class="mdl-textfield__label" for="txteRate">Rate  </label>
+                    <div class="form-group">
+                        <label for="txteRate">Rate  </label>
+                        <input type="number" id="txteRate" class="form-control" />
+
                     </div>
                     <br />
                     <input type="hidden" id="hdnEditId" />
                 </form>
-                <div>
-                    <input type="button" value="Edit" onclick="EditDetails()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
-                    <input type="button" value="Cancel" data-dismiss="modal" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
-                </div>
+            </div>
+
+            <div class="modal-footer">
+                <input type="button" value="Edit" onclick="EditDetails()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
+                <input type="button" value="Cancel" data-dismiss="modal" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
             </div>
         </div>
     </div>
@@ -75,8 +81,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>List Orders <a href="#" class="close" data-dismiss="modal">[X]</a></h3>
-                
+                <h4 class="modal-title">List Orders</h4>
             </div>
             
             <div class="modal-body">
@@ -100,8 +105,11 @@
                 </div>
                 <br />
                 <div>
-                    <input type="button" value="OK" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"/>
-                    <input type="button" value="Cancel" data-dismiss="modal" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"/>
+                    
+                </div>
+                <div class="modal-footer">
+                    <input type="button" value="OK" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
+                    <input type="button" value="Cancel" data-dismiss="modal" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
                 </div>
             </div>
         </div>
@@ -141,8 +149,6 @@
         </div>
     </form>
 </div>
-
-
 
 <div class="row">
     <div class="col-md-5">
@@ -305,7 +311,7 @@
         }
         
     
-    // Updates Array Entries based on the value provided from EDIT Pop-up page
+    // Updates Array Entries based on the values provided from EDIT Pop-up page
     function EditDetails() {
         var newItemName = $("#txteItemName").val();
         var newQuantity = $("#txteQuantity").val();
